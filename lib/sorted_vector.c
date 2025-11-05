@@ -1,9 +1,9 @@
 /**
  * Contains functions for the sorted vector struct
  *
- * @author: STUDENT ADD YOUR NAME
+ * @author: Maggie Li
  * @class: CS 5008
- * @term: UPDATE WITH CURRENT SEMESTER
+ * @term: fall 2025
 **/
 
 #include "vector.h"
@@ -25,8 +25,20 @@
 */
 void add_to_sorted_vector(SortedMovieVector * vector, Movie * movie) {
     // STUDENT TODO: implement this function
-}
+    if (vector->size == 0) {
+        vector_insert(vector, movie, 0);
+        return;
+    }
 
+    for (int i = 0; i < vector->size; i++) {
+        if (compare_movies(movie, vector->movies[i]) < 0) {
+            vector_insert(vector, movie, i);
+            return;
+        }
+    }
+    
+    vector_insert(vector, movie, vector->size);
+}
 /**
  * Finds a movie in the sorted vector based on the title only of the movie.
  *
@@ -44,7 +56,22 @@ void add_to_sorted_vector(SortedMovieVector * vector, Movie * movie) {
  */
 Movie * find_in_sorted_vector(SortedMovieVector * vector, const char * title) {
     // STUDENT TODO: implement this function
-
+    int left = 0;
+    int right = vector->size - 1;
+    
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        int cmp = strcasecmp(title, vector->movies[mid]->title);
+        
+        if (cmp == 0) {
+            return vector->movies[mid];
+        } else if (cmp < 0) {
+            right = mid - 1;
+        } else {
+            
+            left = mid + 1;
+        }
+    }
     // if the movie is not found, return NULL
     return NULL;
 }
@@ -66,6 +93,20 @@ Movie * find_in_sorted_vector(SortedMovieVector * vector, const char * title) {
  */
 Movie* sorted_vector_remove(SortedMovieVector *vector, const char *title){
     // STUDENT TODO: implement this function
-
+    int left = 0;
+    int right = vector->size - 1;
+    
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        int cmp = strcasecmp(title, vector->movies[mid]->title);
+        
+        if (cmp == 0) {
+            return vector_remove(vector, mid);
+        } else if (cmp < 0) {
+            right = mid - 1;
+        } else {
+            left = mid + 1;
+        }
+    }
     return NULL; // not found
 }
