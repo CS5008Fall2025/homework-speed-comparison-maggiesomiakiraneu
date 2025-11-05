@@ -160,17 +160,17 @@ For example:
 
 1. If you wrote your linked list as a single linked list, removing from the back was expensive. If you wrote it as a double linked list, removing from the back was cheap. Why do you think that is?
    
-  In a singly linked list, removing the last element means I have to go through the whole list to find the second-to-last node. I then set its next pointer to NULL and update the tail. This takes $O(n)$ time because I check all n-1 nodes. In a doubly linked list, each node has a pointer to the previous node. I can go directly from the tail to the second-to-last node. This lets me remove the last element in $O(1)$ time.
+   In a singly linked list, removing the last element means I have to go through the whole list to find the second-to-last node. I then set its next pointer to NULL and update the tail. This takes $O(n)$ time because I check all n-1 nodes. In a doubly linked list, each node has a pointer to the previous node. I can go directly from the tail to the second-to-last node. This lets me remove the last element in $O(1)$ time.
 
-2. When running most functions, at least ~30% of the tests were worse case scenarios. Why do you think that is? 
+1. When running most functions, at least ~30% of the tests were worse case scenarios. Why do you think that is? 
 
    The test creates worst case situations. Some items that are searched or removed do not exist in the data. About 30% of the test items are outside the range of added items. This makes the search and remove operations go through the whole structure before deciding the item is not there.
 
-3. What was done in the code to encourage that? 
+2. What was done in the code to encourage that? 
 
    The build_sample_indexes function uses a SAMPLE_SPLIT constant set to 0.7. This makes 70% of test operations use items that are in the data structures. The other 30% use items that might not exist. This split creates a mix of successful and unsuccessful operations. It tests both normal and worst case performance.
 
-4. How did this particularly influence the linked list searches?
+3. How did this particularly influence the linked list searches?
 
    For linked lists, searching for items that do not exist means going through the whole list until reaching NULL without a match. This always takes $O(n)$ time. In a BST or SortedVector, unsuccessful searches can stop early using tree pruning or binary search. Linked lists have to check every node to be sure the item is not there. This makes the average time for linked list operations much higher than for structures that can stop early.
 
